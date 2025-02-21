@@ -40,13 +40,16 @@ def get_plants_data() -> list:
 def main():
     plants_data = get_plants_data()
     name_width = max(len(plant[0]) for plant in plants_data) + 2
-    qty_width = 15  # Możesz dostosować
+    qty_width = 10
 
     for plant in plants_data:
+        balance = round(plant[2]-plant[1],1)
+
         print(
-            colored(" Name: ", "red").ljust(10) + colored(plant[0].ljust(name_width), "white") +
-            colored(" Creation day quantity: ", "yellow").ljust(25) + colored(str(plant[1]).rjust(qty_width), "white") +
-            colored(" Current day quantity: ", "green").ljust(25) + colored(str(plant[2]).rjust(qty_width), "white")
+            colored(" Name: ", "yellow").ljust(10) + colored(plant[0].ljust(name_width), "white") +
+            colored(" Creation day quantity: ", "yellow").ljust(25) + colored(str(round(plant[1],1)).rjust(qty_width), "white") +
+            colored(" Current day quantity: ", "yellow").ljust(25) + colored(str(round(plant[2],1)).rjust(qty_width), "white") +
+            colored(" Bilans: ", "green" if balance > 0 else "red").ljust(25) + colored(str(balance).rjust(qty_width), "green" if balance > 0 else "red")
         )
 
 if __name__ == "__main__":
