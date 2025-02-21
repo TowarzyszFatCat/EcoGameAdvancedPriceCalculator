@@ -36,8 +36,7 @@ def get_plants_data() -> list:
 
     return plants_cleaned_up_data
 
-
-def main():
+def plants_data_visualization():
     plants_data = get_plants_data()
     name_width = max(len(plant[0]) for plant in plants_data) + 2
     qty_width = 10
@@ -51,6 +50,10 @@ def main():
             colored(" Current day quantity: ", "yellow").ljust(25) + colored(str(round(plant[2],1)).rjust(qty_width), "white") +
             colored(" Bilans: ", "green" if balance > 0 else "red").ljust(25) + colored(str(balance).rjust(qty_width), "green" if balance > 0 else "red")
         )
+
+
+def main():
+    pass
 
 if __name__ == "__main__":
     main()
