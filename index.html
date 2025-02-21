@@ -35,8 +35,17 @@
     </table>
     <script>
         const SERVER_URL = 'https://giant-panda.play.eco/';
-        const plantsList = ["Wheat", "Flax", "Beans", "Joshua"];
-        const animalsList = ["Deer", "Bison", "Wolf"];
+        const plantsList = [
+            "Agave", "AmanitaMushroom", "Amaranth", "BarrelCactus", "Beet", "BigBluestem", "Bunchgrass", "Buttonbush", "Camas", "CamasBulb", 
+            "Cedar", "Ceiba", "ChiliPepper", "CookeinaMushroom", "Corn", "Cotton", "CreosoteBush", "CriminiMushroom", "Cucumber", "DwarfWillow", 
+            "Fireweed", "Foxglove", "GiantCactus", "GiantFungus", "GiantReed", "Ginger", "Huckleberry", "JoshuaTree", "KingFern", "Lupine", 
+            "Mushroom", "NopalCactus", "Oak", "OilPalm", "Papaya", "Pine", "PricklyPear", "Pumpkin", "Redwood", "Rice", "SaguaroCactus", 
+            "Sagebrush", "Sunflower", "Taro", "Tomato", "Wheat", "WhiteBarkPine", "WhiteFir", "WitchHazel"
+        ];
+
+        const animalsList = [
+            "Bison", "Deer", "Elk", "Fox", "Hare", "MountainGoat", "Otter", "Salmon", "Trout", "Tuna", "Turkey", "Wolf"
+        ];
 
         async function getServerDaysRunning() {
             const response = await fetch(`${SERVER_URL}info`);
