@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Advanced Price Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #121212; color: white;}
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 3px solid #282828; padding: 10px;}
+        td {background-color: #575757; }
+        th { background-color: #3f3f3f; }
+        .back_button {font-size: 32px; border-radius: 12px; border: 2px solid; padding: 12px;}
+        .positive { color: lightgreen; }
+        .negative { color: lightcoral; }
+    </style>
+</head>
+<body>
+    <a href="index.html"><button class="back_button">Back</button></a>
+    <h1>Giant Panda Eco Organisms Statistics</h1>
+    <h2>Plants</h2>
+    <table id="plantsTable">
+        <tr>
+            <th>Name</th>
+            <th>Creation Day Quantity</th>
+            <th>Previous Day Quantity</th>
+            <th>Current Day Quantity</th>
+            <th>Balance Last</th>
+            <th>Balance Global</th>
+        </tr>
+    </table>
+    <h2>Animals</h2>
+    <table id="animalsTable">
+        <tr>
+            <th>Name</th>
+            <th>Creation Day Quantity</th>
+            <th>Previous Day Quantity</th>
+            <th>Current Day Quantity</th>
+            <th>Balance Last</th>
+            <th>Balance Global</th>
+        </tr>
+    </table>
+    <script>
+        const SERVER_URL = 'https://giant-panda.play.eco/';
+        const plants = [
+            "Agave", "AmanitaMushroom", "ArcticWillow", "BarrelCactus", "Beans", "Beets", "BigBluestem", "BoleteMushroom", "Bullrush", "Bunchgrass", "Buttonbush", "Camas", "Clam", "CommonGrass", "CookeinaMushroom", "Corn", "Cotton", "CreosoteBush", "CriminiMushroom", "DeerLichen", "DesertMoss", "DwarfWillow", "Fern", "FilmyFern", "Fireweed", "Flax", "Heliconia", "Huckleberry", "Jointfir", "Kelp", "KingFern", "LatticeMushroom", "Lupine", "OceanSpray", "Orchid", "Papaya", "PeatMoss", "Pineapple", "PitcherPlant", "PricklyPear", "Pumpkin", "Rice", "Salal", "Saxifrage", "Seagrass", "Sunflower", "Switchgrass", "Taro", "Tomatoes", "Trillium", "Urchin", "Waterweed", "Wheat", "WhiteBursage"
+        ];
+
+        const animals = [
+            "Agouti", "Alligator", "Bass", "BighornSheep", "Bison", "BlueShark", "Cod", "Coyote", "Crab", "Deer", "Elk", "Fox", "Hare", "Jaguar", "MoonJellyfish", "MountainGoat", "Otter", "PacificSardine", "PrairieDog", "Salmon", "SnappingTurtle", "Tarantula", "Tortoise", "Trout", "Tuna", "Turkey", "Wolf"
+        ];
+
+        async function getServerDaysRunning() {
+            const response = await fetch(`${SERVER_URL}info`);
+            const data = await response.json();
+            return data.DaysRunning;
+        }
+
+        async function fetchData(speciesList, type) {
+            const serverDaysRunning = await getServerDaysRunning();
+            const table = document.getElementById(`${type}Table`);
+
+            for (let species of speciesList) {
+                const response = await fetch(`${SERVER_URL}datasets/get?dataSet=${species}Species&dayStart=0&dayEnd=${serverDaysRunning}`);
+                const data = await response.json();
+                const creationDayQuantity = data.Values[0];
+                const currentDayQuantity = data.Values[data.Values.length - 1];
+                const previousDayQuantity = data.Values[data.Values.length - 2];
+                const balanceLast = (currentDayQuantity - previousDayQuantity).toFixed(1);
+                const balanceGlobal = (currentDayQuantity - creationDayQuantity).toFixed(1);
+                
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${species}</td>
+                    <td>${creationDayQuantity.toFixed(1)}</td>
+                    <td>${previousDayQuantity.toFixed(1)}</td>
+                    <td>${currentDayQuantity.toFixed(1)}</td>
+                    <td class="${balanceLast > 0 ? 'positive' : 'negative'}">${balanceLast}</td>
+                    <td class="${balanceGlobal > 0 ? 'positive' : 'negative'}">${balanceGlobal}</td>
+                `;
+                table.appendChild(row);
+            }
+        }
+
+        fetchData(plants, "plants");
+        fetchData(animals, "animals");
+    </script>
+</body>
+</html>
